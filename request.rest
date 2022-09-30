@@ -12,3 +12,16 @@ Content-Type: application/json
     "password": "test",
     "description": "description test"
 }
+
+###
+
+POST http://localhost:3001/users/login
+Content-Type: application/json
+
+{
+    "name": "Cottrez",
+    "surname": "Rémy",
+    "email": "remycottrez@gmail.com",
+    "password": "test",
+    "description": "description test"
+}

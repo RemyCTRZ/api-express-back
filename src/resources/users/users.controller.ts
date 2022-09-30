@@ -40,6 +40,22 @@ UsersController.post('/', async (req, res) => {
     }
 })
 
+UsersController.post('/login', async (req, res) => {
+    const user = await User.findOne({ where: { email: req.body.email } })
+    if (user == null) {
+        return res.status(400).send('Utilisateur introuvable')
+    }
+    try {
+        if (await bcrypt.compare(req.body.password, user.password)) {
+            res.send('Connexion autorisée')
+        } else {
+            res.send('Connexion refusée')
+        }
+    } catch {
+        res.status(500).send('Opération échouée')
+    }
+})
+
 UsersController.post('/delete', (req, res) => {
 
     const id = req.body.id
