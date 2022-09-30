@@ -5,39 +5,22 @@ export class UsersService {
 
   async FindAll() {
     const users = await User.findAll();
-    return
+    return users
   }
 
   async FindOne(id: number) {
     const users = await User.findByPk(id);
-    return
+    return users
   }
 
-  async CreateUser(name: string, surname: string, email: string, password: string, description: string) {
-
-    await User.sync({ alter: true }).then(() => {
-      return User.create({
-        name: name,
-        surname: surname,
-        email: email,
-        password: password,
-        description: description
-      })
-    }).then(() => {
-      console.log("Utilisateur ajouté à la base de données !")
-    }).catch((err: string) => {
-      console.log(err)
-    })
-
+  async CreateUser(user: object) {
+    await User.create({ ...user },
+      { fields: ['name', 'surname', 'email', 'password', 'description'] })
   }
 
   DeleteUser(id: number) {
     return User.destroy({
       id: id,
     })
-
   }
-
-
-
 }

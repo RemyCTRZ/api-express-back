@@ -1,0 +1,14 @@
+GET http://localhost:3001/users
+
+###
+
+POST http://localhost:3001/users
+Content-Type: application/json
+
+{
+    "name": "Cottrez",
+    "surname": "Rémy",
+    "email": "remycottrez@gmail.com",
+    "password": "test",
+    "description": "description test"
+}

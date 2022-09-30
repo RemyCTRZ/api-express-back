@@ -1,12 +1,10 @@
 import { Router } from 'express'
-import { stringify } from 'querystring'
-import { REPL_MODE_STRICT } from 'repl'
 import { UsersService } from '~/resources/users/users.service'
 import { BadRequestException, NotFoundException } from '~/utils/exceptions'
+import { User } from '~/config'
 
-/**
- * Nous créeons un `Router` Express, il nous permet de créer des routes en dehors du fichier `src/index.ts`
- */
+const bcrypt = require('bcrypt')
+
 const UsersController = Router()
 
 UsersController.get('/', async (req, res) => {
@@ -22,17 +20,24 @@ UsersController.get('/:id', async (req, res) => {
         .json(await service.FindOne(id))
 })
 
-UsersController.post('/sign-in', (req, res) => {
+UsersController.post('/', async (req, res) => {
+    try {
+        const salt = await bcrypt.genSalt()
+        const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
-    const name = req.body.name;
-    const surname = req.body.surname;
-    const email = req.body.email;
-    const password = req.body.password;
-    const description = req.body.description;
+        const user = {
+            name: req.body.name,
+            surname: req.body.surname,
+            email: req.body.email,
+            password: hashedPassword,
+            description: req.body.description
+        }
 
-    return res
-        .status(200)
-        .json(service.CreateUser(name, surname, email, password, description))
+        service.CreateUser(user)
+
+    } catch {
+        res.status(500).send()
+    }
 })
 
 UsersController.post('/delete', (req, res) => {
