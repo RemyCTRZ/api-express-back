@@ -22,6 +22,18 @@ UsersController.get('/:id', async (req, res) => {
         .json(await service.FindOne(id))
 })
 
+UsersController.post('/update', async (req, res) => {
+
+    const user = {
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        description: req.body.description
+    }
+
+    await User.update({ user }, { where: { email: User.email } })
+})
+
 UsersController.get('/profile', async (req, res) => {
     res.json(await User.findOne({ where: { email: User.email } }))
 })
