@@ -3,9 +3,11 @@ import { UsersService } from '~/resources/users/users.service'
 import { BadRequestException, NotFoundException } from '~/utils/exceptions'
 import { User } from '~/config'
 
+require('dotenv').config()
 const bcrypt = require('bcrypt')
-
+const jwt = require('jsonwebtoken')
 const UsersController = Router()
+
 
 UsersController.get('/', async (req, res) => {
     return res
@@ -18,6 +20,10 @@ UsersController.get('/:id', async (req, res) => {
     return res
         .status(200)
         .json(await service.FindOne(id))
+})
+
+UsersController.get('/profile', async (req, res) => {
+    res.json(await User.findOne({ where: { email: User.email } }))
 })
 
 UsersController.post('/', async (req, res) => {
@@ -47,7 +53,14 @@ UsersController.post('/login', async (req, res) => {
     }
     try {
         if (await bcrypt.compare(req.body.password, user.password)) {
-            res.send('Connexion autorisée')
+            const userEmail = req.body.email
+            const accessToken = generateAccessToken(userEmail)
+
+            function generateAccessToken(user: object) {
+                return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
+            }
+
+            res.json({ accessToken: accessToken })
         } else {
             res.send('Connexion refusée')
         }

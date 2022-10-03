@@ -7,7 +7,6 @@ import { ExceptionsHandler } from '~/middlewares/exceptions.handler'
 import { UnknownRoutesHandler } from '~/middlewares/unknownRoutes.handler'
 
 const app = express()
-const jwt = require('jsonwebtoken')
 
 app.use(express.json())
 
