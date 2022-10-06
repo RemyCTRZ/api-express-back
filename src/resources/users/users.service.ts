@@ -1,26 +1,34 @@
+import { Request, Response } from 'express'
+import { Users } from '../../../types/users'
 import { User } from '~/config'
 import { NotFoundException } from '~/utils/exceptions'
 
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
 export class UsersService {
 
-  async FindAll() {
-    const users = await User.findAll();
-    return users
-  }
-
-  async FindOne(id: number) {
-    const users = await User.findByPk(id);
-    return users
-  }
-
   async CreateUser(user: object) {
-    await User.create({ ...user },
-      { fields: ['name', 'surname', 'email', 'password', 'description'] })
+    await User.create({ ...user }),
+      { fields: ['name', 'surname', 'email', 'password', 'description'] }
   }
 
-  DeleteUser(id: number) {
-    return User.destroy({
-      id: id,
-    })
+  async LoginUser(req: Request, res: Response, user: Partial<Users>) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      const userEmail = req.body.email
+      const accessToken = generateAccessToken(userEmail)
+
+      function generateAccessToken(user: object) {
+        return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
+      }
+
+      res.json({ accessToken: accessToken })
+    } else {
+      res.send('Connexion refusée')
+    }
+  }
+
+  async UpdateUser(user: object) {
+    await User.update({ user }, { where: { email: User.email } })
   }
 }
