@@ -7,7 +7,7 @@ Content-Type: application/json
 
 {
     "name": "Cottrez",
-    "surname": "Rémy",
+    "firstName": "Rémy",
     "email": "remycottrez@gmail.com",
     "password": "test",
     "description": "description test"
@@ -37,3 +37,17 @@ Content-Type: application/json
 
 GET http://localhost:3001/admin
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicmVteWNvdHRyZXpAZ21haWwuY29tIiwiaWF0IjoxNjY1MDQ1NDkwfQ.gU4mGfNULu9HpnALxWp07pyxz44jZuML5rEYjQ_boaA
+
+###
+
+POST http://localhost:3001/user/signup
+Content-Type: application/json
+
+{
+    "name": "Cottrez",
+    "firstName": "Rémy",
+    "birthDate": '26-02-1998',
+    "email": "remycottrez@gmail.com",
+    "password": "password123",
+    "description": "C'est ma description j'ai pété les plombs sans abandonner ni baisser les bras"
+}

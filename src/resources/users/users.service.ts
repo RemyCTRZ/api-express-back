@@ -10,7 +10,7 @@ export class UsersService {
 
   async CreateUser(user: object) {
     await User.create({ ...user }),
-      { fields: ['name', 'surname', 'email', 'password', 'description'] }
+      { fields: ['name', 'firstName', 'email', 'password', 'description'] }
   }
 
   async LoginUser(req: Request, res: Response, user: Partial<Users>) {

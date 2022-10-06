@@ -25,7 +25,7 @@ AdminsController.post('/login', async (req, res) => {
                 return jwt.sign({ email: user }, process.env.ACCESS_TOKEN_SECRET)
             }
 
-            res.json({ accessToken: accessToken })
+            return res.status(200).json({ accessToken: accessToken })
         } else {
             res.send('Connexion refusée')
         }
@@ -57,7 +57,7 @@ AdminsController.post('/update', authenticateToken, async (req, res) => {
 
     const user = {
         name: req.body.name,
-        surname: req.body.surname,
+        firstName: req.body.firstName,
         email: req.body.email,
         description: req.body.description
     }

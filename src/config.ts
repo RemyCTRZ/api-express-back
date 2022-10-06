@@ -7,13 +7,18 @@ export const User = sequelize.define('user', {
     type: Sequelize.DataTypes.STRING,
     allowNull: false
   },
-  surname: {
+  firstName: {
     type: Sequelize.DataTypes.STRING,
+    allowNull: false
+  },
+  birthDate: {
+    type: Sequelize.DataTypes.DATEONLY,
     allowNull: false
   },
   email: {
     type: Sequelize.DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   password: {
     type: Sequelize.DataTypes.STRING,
@@ -25,12 +30,14 @@ export const User = sequelize.define('user', {
   },
   description: {
     type: Sequelize.DataTypes.STRING,
-    allowNull: false
+    allowNull: true
   }
 },
   {
     freezeTableName: true
   })
+
+// User.sync({ alter: true })
 
 export const config = {
   API_PORT: process.env.API_PORT

@@ -5,7 +5,6 @@ import { User } from '~/config'
 
 require('dotenv').config()
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 const UsersController = Router()
 
 
@@ -13,7 +12,7 @@ const UsersController = Router()
 // Route pour la page de profil de l'utilisateur connecté
 
 UsersController.get('/profile', async (req, res) => {
-    res.json(await User.findOne({ where: { email: User.email } }))
+    return res.status(200).json(await User.findOne({ where: { email: User.email } }))
 })
 
 // Route pour l'inscription
@@ -24,15 +23,17 @@ UsersController.post('/signup', async (req, res) => {
         const salt = await bcrypt.genSalt()
         const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
-        const user = {
+        const user: object = {
             name: req.body.name,
-            surname: req.body.surname,
+            firstName: req.body.firstName,
+            birthDate: req.body.birthDate,
             email: req.body.email,
             password: hashedPassword,
             description: req.body.description
         }
 
-        service.CreateUser(user)
+        return res.status(200).json(await service.CreateUser(user))
+
 
     } catch {
         res.status(500).send("Informations invalides")
@@ -42,12 +43,13 @@ UsersController.post('/signup', async (req, res) => {
 // Route pour que l'utilisateur se connecte (vérification mdp et token)
 
 UsersController.post('/login', async (req, res) => {
+    console.log(req.body)
     const user = await User.findOne({ where: { email: req.body.email } })
     if (user == null) {
         return res.status(400).send('Utilisateur introuvable')
     }
     try {
-        service.LoginUser(req, res, user);
+        return res.status(200).json(await service.LoginUser(req, res, user))
     } catch {
         res.status(500).send('Opération échouée')
     }
@@ -60,9 +62,9 @@ UsersController.post('/update', async (req, res) => {
     const user = {
         email: req.body.email,
     }
-    
+
     try {
-        service.UpdateUser(user)
+        return res.status(200).json(service.UpdateUser(user))
     } catch {
         res.status(500).send('Erreur update')
     }
