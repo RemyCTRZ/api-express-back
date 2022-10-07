@@ -2,16 +2,17 @@ import { Router } from 'express'
 import { UsersService } from '~/resources/users/users.service'
 import { BadRequestException, NotFoundException } from '~/utils/exceptions'
 import { User } from '~/config'
+import { authenticateToken } from '~/middlewares/authenticateToken'
+
 
 require('dotenv').config()
 const bcrypt = require('bcrypt')
 const UsersController = Router()
 
 
-
 // Route pour la page de profil de l'utilisateur connecté
 
-UsersController.get('/profile', async (req, res) => {
+UsersController.get('/profile', authenticateToken, async (req, res) => {
     return res.status(200).json(await User.findOne({ where: { email: User.email } }))
 })
 
@@ -34,7 +35,6 @@ UsersController.post('/signup', async (req, res) => {
 
         return res.status(200).json(await service.CreateUser(user))
 
-
     } catch {
         res.status(500).send("Informations invalides")
     }
@@ -43,7 +43,6 @@ UsersController.post('/signup', async (req, res) => {
 // Route pour que l'utilisateur se connecte (vérification mdp et token)
 
 UsersController.post('/login', async (req, res) => {
-    console.log(req.body)
     const user = await User.findOne({ where: { email: req.body.email } })
     if (user == null) {
         return res.status(400).send('Utilisateur introuvable')
@@ -57,7 +56,7 @@ UsersController.post('/login', async (req, res) => {
 
 // Route pour la modification des données de l'utilisateur
 
-UsersController.post('/update', async (req, res) => {
+UsersController.post('/update', authenticateToken, async (req, res) => {
 
     const user = {
         email: req.body.email,

@@ -8,6 +8,11 @@ const jwt = require('jsonwebtoken')
 
 export class UsersService {
 
+  async FindOne(id: number) {
+    const users = await User.findByPk(id);
+    return users
+  }
+
   async CreateUser(user: object) {
     await User.create({ ...user }),
       { fields: ['name', 'firstName', 'email', 'password', 'description'] }
