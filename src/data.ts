@@ -6,5 +6,5 @@ import type { User } from '~~/types/users'
  * On spécifie ici que `users` est un tableau contenant des `User`
  */
 export const users: User[] = [
-  { id: 1, name: 'Cottrez', surname: 'Rémy', email: 'remycottrez@gmail.com', password: 'test123' }
+  { id: 1, name: 'Cottrez', firstName: 'Rémy', email: 'remycottrez@gmail.com', password: 'test123' }
 ]

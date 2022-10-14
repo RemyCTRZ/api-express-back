@@ -7,7 +7,7 @@ export const User = sequelize.define('user', {
     type: Sequelize.DataTypes.STRING,
     allowNull: false
   },
-  surname: {
+  firstName: {
     type: Sequelize.DataTypes.STRING,
     allowNull: false
   },
