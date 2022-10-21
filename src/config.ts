@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-
+//TODO on n'a pas l'idée d'aller chercher initialement les données de conf de sequelize dans ce fichier, faut mettre ça à un endroit plus expressif
 export const sequelize = new Sequelize('postgres://' + process.env.USER + ':' + process.env.PASSWORD + '@' + process.env.HOST + ':' + process.env.DATABASE_PORT + '/' + process.env.DATABASE)
 
 export const User = sequelize.define('user', {
@@ -40,5 +40,5 @@ export const User = sequelize.define('user', {
 // User.sync({ alter: true })
 
 export const config = {
-  API_PORT: process.env.API_PORT
+  API_PORT: 3000
 }

@@ -25,7 +25,7 @@ export const ExceptionsHandler = (err: any, req: Request, res: Response, next: N
     if (err.status && err.error) {
         return res
             .status(err.status)
-            .json({ error: err.error })
+            .json({ error: err.error }) //faut vraiment être sûr de jamais renvoyer une stacktrace
     }
 
     /**

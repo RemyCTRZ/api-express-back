@@ -1,9 +1,9 @@
 import { User } from '~/config'
-import { NotFoundException } from '~/utils/exceptions'
+import { NotFoundException } from '~/utils/exceptions' //TODO virer
 
-export class AdminsService {
-    async FindAll() {
-        const users = await User.findAll();
+export class AdminsService { //TODO en fait c'est pas un service mais plutôt un repo, j'y vois pas vraiment de logique métier
+    async FindAll() { //minuscule
+        const users = await User.findAll(); 
         return users
     }
 
