@@ -18,7 +18,11 @@ UsersController.get('/profile', authenticateToken, async (req, res) => {
 
 // Route pour l'inscription
 
-UsersController.post('/signup', async (req, res) => {
+UsersController.get('/profile', async (req, res) => {
+    res.json(await User.findOne({ where: { email: User.email } }))
+})
+
+UsersController.post('/register', async (req, res) => {
     try {
 
         const salt = await bcrypt.genSalt()
@@ -27,7 +31,6 @@ UsersController.post('/signup', async (req, res) => {
         const user: object = {
             name: req.body.name,
             firstName: req.body.firstName,
-            birthDate: req.body.birthDate,
             email: req.body.email,
             password: hashedPassword,
             description: req.body.description
